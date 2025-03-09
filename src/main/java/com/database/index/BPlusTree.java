@@ -142,10 +142,8 @@ public class BPlusTree {
      */
     public Optional<RecordId> get(DataBox key) {
         typecheck(key);
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): implement
 
         LeafNode leafNode = root.get(key);
         return leafNode.FindRid(key);
@@ -160,7 +158,6 @@ public class BPlusTree {
      */
     public Iterator<RecordId> scanEqual(DataBox key) {
         typecheck(key);
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
         Optional<RecordId> rid = get(key);
@@ -199,10 +196,8 @@ public class BPlusTree {
      * memory will receive 0 points.
      */
     public Iterator<RecordId> scanAll() {
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): Return a BPlusTreeIterator.
         if(root != null){
             return new BPlusTreeIterator(root.getLeftmostLeaf(), 0);
         }
@@ -235,10 +230,8 @@ public class BPlusTree {
      */
     public Iterator<RecordId> scanGreaterEqual(DataBox key) {
         typecheck(key);
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): Return a BPlusTreeIterator.
         if(root != null){
             LeafNode curLeafNode = root.get(key);
             int cursor=0;
@@ -269,13 +262,8 @@ public class BPlusTree {
      */
     public void put(DataBox key, RecordId rid) {
         typecheck(key);
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): implement
-        // Note: You should NOT update the root variable directly.
-        // Use the provided updateRoot() helper method to change
-        // the tree's root if the old root splits.
 
         Optional<Pair<DataBox, Long>> oldRootRet = root.put(key, rid);
         if(oldRootRet.isPresent()){
@@ -316,13 +304,8 @@ public class BPlusTree {
      * bulkLoad (see comments in BPlusNode.bulkLoad).
      */
     public void bulkLoad(Iterator<Pair<DataBox, RecordId>> data, float fillFactor) {
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): implement
-        // Note: You should NOT update the root variable directly.
-        // Use the provided updateRoot() helper method to change
-        // the tree's root if the old root splits.
         if(!data.hasNext()){
             return;
         }
@@ -359,10 +342,9 @@ public class BPlusTree {
      */
     public void remove(DataBox key) {
         typecheck(key);
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
-        // TODO(proj2): implement
+
         if(root != null){
             root.remove(key);
         }
@@ -376,7 +358,6 @@ public class BPlusTree {
      * more information.
      */
     public String toSexp() {
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
         return root.toSexp();
     }
@@ -394,7 +375,6 @@ public class BPlusTree {
      * to create a PDF of the tree.
      */
     public String toDot() {
-        // TODO(proj4_integration): Update the following line
         LockUtil.ensureSufficientLockHeld(lockContext, LockType.NL);
 
         List<String> strings = new ArrayList<>();
@@ -479,7 +459,6 @@ public class BPlusTree {
 
     // Iterator ////////////////////////////////////////////////////////////////
     private class BPlusTreeIterator implements Iterator<RecordId> {
-        // TODO(proj2): Add whatever fields and constructors you want here.
         int cursor=0;       // index of next element to return
         int lastRet = -1; // index of last element returned; -1 if no such
         LeafNode curLeafNode = null;
@@ -491,7 +470,6 @@ public class BPlusTree {
 
         @Override
         public boolean hasNext() {
-            // TODO(proj2): implement
             if(cursor == curLeafNode.getRids().size()){
                 if(curLeafNode.getRightSibling().isPresent()){
                     return !curLeafNode.getRightSibling().get().getRids().isEmpty();
@@ -506,7 +484,6 @@ public class BPlusTree {
 
         @Override
         public RecordId next() {
-            // TODO(proj2): implement
             if (!hasNext())
                 throw new NoSuchElementException();
             if(cursor == curLeafNode.getRids().size()){

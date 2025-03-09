@@ -95,7 +95,6 @@ public class SortOperator extends QueryOperator {
      * iterator
      */
     public Run sortRun(Iterator<Record> records) {
-        // TODO(proj3_part1): implement
         List<Record> list = new ArrayList<>();
         records.forEachRemaining(list::add);
         list.sort(comparator);
@@ -121,7 +120,6 @@ public class SortOperator extends QueryOperator {
      */
     public Run mergeSortedRuns(List<Run> runs) {
         assert (runs.size() <= this.numBuffers - 1);
-        // TODO(proj3_part1): implement
         Run ret = new Run(transaction, getSchema());
         PriorityQueue<Pair<Record, Integer>> pq = new PriorityQueue<>(comparatorPair);
         List<BacktrackingIterator<Record>> list = new ArrayList<>();
@@ -163,7 +161,6 @@ public class SortOperator extends QueryOperator {
      * @return a list of sorted runs obtained by merging the input runs
      */
     public List<Run> mergePass(List<Run> runs) {
-        // TODO(proj3_part1): implement
         List<Run> ret = new ArrayList<>();
         int N = numBuffers-1;
         for(int i=0;i< runs.size();i+=N){
@@ -189,7 +186,6 @@ public class SortOperator extends QueryOperator {
         // Iterator over the records of the relation we want to sort
         Iterator<Record> sourceIterator = getSource().iterator();
 
-        // TODO(proj3_part1): implement
         List<Run> runs = new ArrayList<>();
         while (sourceIterator.hasNext()){
             runs.add(sortRun(getBlockIterator(sourceIterator, getSchema(), numBuffers)));
@@ -197,7 +193,7 @@ public class SortOperator extends QueryOperator {
         while(runs.size() != 1){
             runs = mergePass(runs);
         }
-        return runs.iterator().next(); // TODO(proj3_part1): replace this!
+        return runs.iterator().next();
     }
 
     /**

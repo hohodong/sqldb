@@ -92,7 +92,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
      */
     @Override
     public long commit(long transNum) {
-        // TODO(proj5): implement
         TransactionTableEntry transactionEntry = transactionTable.get(transNum);
         assert (transactionEntry != null);
 
@@ -120,7 +119,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
      */
     @Override
     public long abort(long transNum) {
-        // TODO(proj5): implement
         TransactionTableEntry transactionEntry = transactionTable.get(transNum);
         assert (transactionEntry != null);
 
@@ -148,7 +146,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
      */
     @Override
     public long end(long transNum) {
-        // TODO(proj5): implement
         TransactionTableEntry transactionEntry = transactionTable.get(transNum);
         assert (transactionEntry != null);
 
@@ -189,7 +186,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
         // Small optimization: if the last record is a CLR we can start rolling
         // back from the next record that hasn't yet been undone.
         long currentLSN = lastRecord.getUndoNextLSN().orElse(lastRecordLSN);
-        // TODO(proj5) implement the rollback logic described above
         while(currentLSN > LSN){
             LogRecord currentLogRecord = logManager.fetchLogRecord(currentLSN);
             if(currentLogRecord.isUndoable()){
@@ -249,7 +245,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
                              byte[] after) {
         assert (before.length == after.length);
         assert (before.length <= BufferManager.EFFECTIVE_PAGE_SIZE / 2);
-        // TODO(proj5): implement
         TransactionTableEntry transactionEntry = transactionTable.get(transNum);
         assert (transactionEntry != null);
 
@@ -437,7 +432,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
         // All of the transaction's changes strictly after the record at LSN should be undone.
         long savepointLSN = transactionEntry.getSavepoint(name);
 
-        // TODO(proj5): implement
         this.rollbackToLSN(transNum, savepointLSN);
         return;
     }
@@ -472,7 +466,6 @@ public class ARIESRecoveryManager implements RecoveryManager {
         Map<Long, Long> chkptDPT = new HashMap<>();
         Map<Long, Pair<Transaction.Status, Long>> chkptTxnTable = new HashMap<>();
 
-        // TODO(proj5): generate end checkpoint record(s) for DPT and transaction table
         for(Map.Entry<Long, Long> entry : dirtyPageTable.entrySet()){
             Long pageID = entry.getKey();
             Long recLSN = entry.getValue();
@@ -623,7 +616,7 @@ public class ARIESRecoveryManager implements RecoveryManager {
         long LSN = masterRecord.lastCheckpointLSN;
         // Set of transactions that have completed
         Set<Long> endedTransactions = new HashSet<>();
-        // TODO(proj5): implement
+
         Iterator<LogRecord> logRecordIterator = logManager.scanFrom(LSN);
         while(logRecordIterator.hasNext()){
             LogRecord curLogRecord = logRecordIterator.next();
@@ -727,7 +720,7 @@ public class ARIESRecoveryManager implements RecoveryManager {
      *   the pageLSN is checked, and the record is redone if needed.
      */
     void restartRedo() {
-        // TODO(proj5): implement
+
         Long startLSN = Long.MAX_VALUE;
         if(dirtyPageTable.isEmpty()){
             return;
@@ -783,7 +776,7 @@ public class ARIESRecoveryManager implements RecoveryManager {
      *   and remove from transaction table.
      */
     void restartUndo() {
-        // TODO(proj5): implement
+
         PriorityQueue<Pair<Long, TransactionTableEntry>> pq = new PriorityQueue<>(new PairFirstReverseComparator<>());
         for(Map.Entry<Long, TransactionTableEntry> entry : transactionTable.entrySet()){
             if(entry.getValue().transaction.getStatus().equals(Transaction.Status.RECOVERY_ABORTING)){

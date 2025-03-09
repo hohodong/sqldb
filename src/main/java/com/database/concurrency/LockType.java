@@ -21,7 +21,6 @@ public enum LockType {
         if (a == null || b == null) {
             throw new NullPointerException("null lock type");
         }
-        // TODO(proj4_part1): implement
         if(a.toString().equals("NL") || b.toString().equals("NL")){
             return true;
         } else if(a.toString().equals("S")){
@@ -74,7 +73,6 @@ public enum LockType {
         if (parentLockType == null || childLockType == null) {
             throw new NullPointerException("null lock type");
         }
-        // TODO(proj4_part1): implement
         if(parentLockType.toString().equals("IS")){
             return childLockType.toString().equals("S") || childLockType.toString().equals("IS") || childLockType.toString().equals("NL");
         } else if(parentLockType.toString().equals("IX")){
@@ -100,7 +98,6 @@ public enum LockType {
         if (required == null || substitute == null) {
             throw new NullPointerException("null lock type");
         }
-        // TODO(proj4_part1): implement
         if(substitute.toString().equals(required.toString())){
             return true;
         }

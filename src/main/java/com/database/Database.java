@@ -931,7 +931,6 @@ public class Database implements AutoCloseable {
         @Override
         public void close() {
             try {
-                // TODO(proj4_part2)
 //                List<Lock> lockList = lockManager.getLocks(getTransaction());
 //                Collections.reverse(lockList);
 //                for(Lock lock : lockList){
